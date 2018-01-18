@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>海绵天气</title>
+    <link type="text/css" rel="stylesheet" href="./src/weather.css">
+</head>
+<body>
+    <div class="header">
+        <span></span>
+        <div class="right">
+            <input type="text" name="city" id="city" placeholder="搜索市、区、县等" />
+            <ul>
+            </ul>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="main">
+            <p id="temperature"></p>
+            <p id="weatherName"></p>
+        </div>
+        <div class="other">
+
+        </div>
+    </div>
+    <script>
+        
+        var input = document.getElementById('city'),
+            inputValue = '',
+            ul = document.getElementsByTagName('ul')[0],
+            span = document.getElementsByTagName('span')[0],
+            temperatureP = document.getElementById('temperature'),
+            weatherP = document.getElementById('weatherName');
+        
+        input.onfocus = function(){
+            this.setAttribute('placeholder','');
+        };
+        input.oninput = function(){
+            inputValue = this.value;
+            getCityList();
+        }
+        input.onblur = function(){
+            inputValue = this.value;
+            if(inputValue.length == 0){
+                this.setAttribute('placeholder','搜索市、区、县等');
+                disableUl();
+            }
+        }
+
+        function getCityList(){
+            var getCityScript = document.createElement('script');
+            getCityScript.src= 'https://wis.qq.com/city/like?source=pc&city='+ inputValue+'&callback=showCityList';
+            document.body.appendChild(getCityScript);
+        }
+
+        function showCityList(data){
+            if(data.status == 200){
+                var cityArr = data.data;
+                var str = "";
+                if(cityArr && cityArr != null){
+                    for(var key in cityArr){
+                        var info = cityArr[key];
+                        str += '<li><a href="" onclick="chooseCity(\''+info+'\');return false;">'+ info +'</a></li>';
+                    }
+                    if(str.length > 0){
+                        ul.innerHTML = str;
+                        ul.style.display="block";
+                    }else{
+                        disableUl();
+                    }
+                }else{
+                    disableUl();
+                }
+            }
+        }
+
+        function chooseCity(info){
+            var arr = info.split(',');
+            var province = arr[0].trim();
+            var city = arr[1].trim();
+            var county = "";
+            var showSpan = "";
+            if(arr.length >2){
+                county = arr[2].trim();
+                showSpan = city + " " +county;
+            }else{
+                county = "";
+                showSpan = province + " " + city;
+            }
+            getWeather(province,city,county);
+            span.innerHTML = showSpan;
+            input.value = "";
+            disableUl();
+            input.setAttribute('placeholder','搜索市、区、县等');
+        }
+
+        function getWeather(province,city,county){
+            var getWeatherScript = document.createElement('script');
+            getWeatherScript.src= 'https://wis.qq.com/weather/common?source=pc&weather_type=observe&province='+ province +'&city='+ city +'&county='+ county +'&callback=showToday';
+            document.body.appendChild(getWeatherScript);
+        }
+
+        function showToday(data){
+            if(data.status == 200){
+                var weatherObj = data.data;
+                var weatherArr = weatherObj.observe;
+                console.log(weatherArr);
+                var temperature = weatherArr.degree;
+                var weatherName = weatherArr.weather;
+                temperatureP.innerHTML = temperature+'℃';
+                weatherP.innerHTML = weatherName;
+            }else{
+                temperatureP.innerHTML = '-';
+                weatherP.innerHTML = '-';
+            }
+        }
+
+        function disableUl(){
+            ul.style.display="none";
+            ul.innerHTML = "";
+        }
+
+
+    </script>
+</body>
+</html>

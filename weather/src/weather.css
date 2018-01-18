@@ -1,0 +1,121 @@
+*{
+    margin:0;
+    padding:0;
+    list-style: none;
+    text-decoration: none;
+}
+body{
+    background: #f6f6f6;
+}
+.header{
+    background: #fff;
+    width: 100%;
+    height: 50px;
+    position: relative;
+}
+
+.header span{
+    display: block;
+    position: absolute;
+    margin-right: 480px;
+    right: 25px;
+    line-height: 50px;
+}
+
+.header .right{
+   position: absolute;
+   right: 200px;
+   top:50%;
+   margin-top: -15px;
+}
+
+.header .right input{
+    background: #f4f4f4;
+    border: 1px solid #e8e8e8;
+    width:259px;
+    height:20px;
+    font-size:14px;
+    line-height: 20px;
+    border-radius: 5px;
+    padding:5px 8px;
+}
+
+.header .right ul{
+    display: none;
+    position: absolute;
+    overflow: auto;
+    /* overflow-x:hidden;  */
+    margin-top:2px; 
+    border: 1px solid #e8e8e8;
+    width:275px;
+    max-height: 220px;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.header .right ul li{
+    height: 30px;
+    line-height: 30px;
+}
+
+.header .right ul li:hover{
+    background: #ccc;
+}
+
+.header .right ul li a{
+    padding:10px;
+    color:#000;
+    font-size:12px;
+    cursor: pointer;
+}
+
+.wrapper{
+    background: #fff;
+    width: 90%;
+    margin: 30px auto;
+    height: 500px;
+    border-radius:25px;
+    overflow: hidden;
+    position: relative;
+}
+
+.wrapper::after{
+    content: "";
+    border-radius: 33%;
+    position: absolute;
+    border-style: solid;
+    border-width: 50px;
+    border-color: paleturquoise;
+    width: 200px;
+    height: 200px;
+    right: -9%;
+    top: -15%;
+    background-color: deepskyblue;
+    overflow: hidden;
+    transform: rotateZ(19deg);
+    opacity: 0.6;
+}
+
+.wrapper .main{
+    margin-top: 150px;
+    margin-left: 100px;
+    height: 100px;
+}
+
+.main p{
+    display: inline-block;
+}
+
+.main #temperature{
+    line-height: 100px;
+    height: 100px;
+    font-size: 100px;
+    color: darkgray;
+}
+
+.main #weatherName{
+    margin-left: 10px;
+    font-size: 35px;
+    color: lightsalmon;
+}
